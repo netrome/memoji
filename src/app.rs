@@ -19,6 +19,7 @@ struct CopyArgs {
 #[component]
 pub fn App() -> impl IntoView {
     let (search_query, set_search_query) = signal(String::new());
+    let input_ref = NodeRef::<leptos::html::Input>::new();
 
     let filtered_emojis = move || {
         let query = search_query.get();
@@ -37,10 +38,18 @@ pub fn App() -> impl IntoView {
         });
     };
 
+    // Auto-focus the search input when component mounts
+    Effect::new(move |_| {
+        if let Some(input) = input_ref.get() {
+            let _ = input.focus();
+        }
+    });
+
     view! {
         <main class="emoji-picker">
             <div class="search-container">
                 <input
+                    node_ref=input_ref
                     type="text"
                     placeholder="Search emojis..."
                     class="search-input"
