@@ -52,16 +52,15 @@ pub fn App() -> impl IntoView {
             <div class="emoji-grid">
                 <For
                     each=filtered_emojis
-                    key=|emoji| emoji.symbol
+                    key=|emoji| emoji.as_str()
                     children=move |emoji| {
-                        let emoji_symbol = emoji.symbol.to_string();
                         view! {
                             <button
                                 class="emoji-button"
-                                on:click=move |_| copy_emoji(emoji_symbol.clone())
-                                title=emoji.name
+                                on:click=move |_| copy_emoji(emoji.to_string())
+                                title=emoji.name()
                             >
-                                {emoji.symbol}
+                                {emoji.as_str()}
                             </button>
                         }
                     }
